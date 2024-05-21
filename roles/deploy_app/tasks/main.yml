@@ -20,11 +20,11 @@
   args:
     creates: "{{ deploy_path }}/venv/bin/activate"
 
-- name: Install the application
-  pip:
-    requirements: "{{ deploy_path }}/requirements.txt"
-    virtualenv: "{{ deploy_path }}/venv"
-    state: present
+      #- name: Install the application
+      #pip:
+      #requirements: "{{ deploy_path }}/requirements.txt"
+      #virtualenv: "{{ deploy_path }}/venv"
+      #state: present
 
 - name: Copy the application wheel file
   copy:
@@ -37,9 +37,9 @@
     virtualenv: "{{ deploy_path }}/venv"
     state: present
 
-- name: Copy app.py template
-  template:
-    src: app.py.j2
+- name: Copy app.py file
+  copy:
+    src: app.py
     dest: "{{ deploy_path }}/app.py"
 
 - name: Create a systemd service file for the Flask app

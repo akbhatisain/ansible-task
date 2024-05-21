@@ -1,6 +1,6 @@
 ---
 deploy_path: /opt/example
-app_port: 5000
+app_port: 5999
 custom_cas:
   - /opt/ansible/Ansible-Assessment/certs/CA1.crt
   - /opt/ansible/Ansible-Assessment/certs/CA2.crt

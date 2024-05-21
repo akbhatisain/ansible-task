@@ -1,11 +1,11 @@
 ---
-- name: Validate custom CA certificates
-  stat:
-    path: "{{ item }}"
-  register: ca_files
-  with_items:
-    - "{{ custom_cas }}"
-  failed_when: ca_files.stat.exists == false
+#- name: Validate custom CA certificates
+  # stat:
+    #path: "{{ item }}"
+      #register: ca_files
+    # with_items:
+    #   - "{{ custom_cas }}"
+      #  failed_when: ca_files.stat.exists == false
 
 - name: Copy custom CA certificates
   copy:
@@ -19,7 +19,34 @@
     - /opt/ansible/Ansible-Assessment/certs/CA2.crt
     - /opt/ansible/Ansible-Assessment/certs/CA3.crt
 
+#- name: Copy custom CA certificates
+#  copy:
+#    src: "{{ item }}"
+#    dest: /usr/local/share/ca-certificates/
+#    owner: root
+#    group: root
+#        mode: 0644
+#  loop:
+#    - CA1.crt
+#    - CA2.crt
+#    - CA3.crt
+#  notify:
+#    - Update CA certificates
+
 - name: Update CA certificates
   command: update-ca-certificates
   notify:
     - Restart Services
+
+
+
+      #mode: 0644
+#  with_items:
+#    - /opt/ansible/Ansible-Assessment/certs/CA1.crt
+#    - /opt/ansible/Ansible-Assessment/certs/CA2.crt
+#    - /opt/ansible/Ansible-Assessment/certs/CA3.crt
+
+      #- name: Update CA certificates
+      #command: update-ca-certificates
+      # notify:
+      # - Restart Services
