@@ -23,3 +23,13 @@
   command: update-ca-certificates
   notify:
     - Restart Services
+
+
+handlers:
+  - name: Restart Services
+    service:
+      name: "{{ item }}"
+      state: restarted
+    with_items:
+      - nginx
+      - apache2
