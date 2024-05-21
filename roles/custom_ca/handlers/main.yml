@@ -1,3 +1,4 @@
+---
 handlers:
   - name: Restart Services
     service:
