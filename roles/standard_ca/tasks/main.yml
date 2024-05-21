@@ -1,0 +1,8 @@
+---
+- name: Install standard CA certificates
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - ca-certificates
+    - openssl

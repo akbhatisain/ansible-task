@@ -1,0 +1,68 @@
+---
+- name: Ensure Python3 and virtualenv are installed
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - python3
+    - python3-venv
+
+- name: Create deployment directory
+  file:
+    path: "{{ deploy_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Create virtual environment
+  command: python3 -m venv "{{ deploy_path }}/venv"
+  args:
+    creates: "{{ deploy_path }}/venv/bin/activate"
+
+- name: Install the application
+  pip:
+    requirements: "{{ deploy_path }}/requirements.txt"
+    virtualenv: "{{ deploy_path }}/venv"
+    state: present
+
+- name: Copy the application wheel file
+  copy:
+    src: Example-1.1.1-py3-none-any.whl
+    dest: "{{ deploy_path }}/"
+
+- name: Install the application wheel
+  pip:
+    name: "{{ deploy_path }}/Example-1.1.1-py3-none-any.whl"
+    virtualenv: "{{ deploy_path }}/venv"
+    state: present
+
+- name: Copy app.py template
+  template:
+    src: app.py.j2
+    dest: "{{ deploy_path }}/app.py"
+
+- name: Create a systemd service file for the Flask app
+  copy:
+    content: |
+      [Unit]
+      Description=Gunicorn instance to serve Flask app
+      After=network.target
+
+      [Service]
+      User=root
+      Group=www-data
+      WorkingDirectory={{ deploy_path }}
+      Environment="PATH={{ deploy_path }}/venv/bin"
+      ExecStart={{ deploy_path }}/venv/bin/flask run -p {{ app_port }}
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/flask_app.service
+
+- name: Start and enable the Flask app service
+  systemd:
+    name: flask_app
+    state: started
+    enabled: yes
+

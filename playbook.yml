@@ -1,0 +1,11 @@
+---
+- name: Configure CA certificates and deploy Python application
+  hosts: all
+  become: true
+  vars_files:
+    - group_vars/all.yml
+
+  roles:
+    - role: standard_ca
+    - role: custom_ca
+    - role: deploy_app

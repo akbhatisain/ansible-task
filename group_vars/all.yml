@@ -1,0 +1,8 @@
+---
+deploy_path: /opt/example
+app_port: 5000
+custom_cas:
+  - /opt/ansible/Ansible-Assessment/certs/CA1.crt
+  - /opt/ansible/Ansible-Assessment/certs/CA2.crt
+  - /opt/ansible/Ansible-Assessment/certs/CA3.crt
+wheel_file: Example-1.1.1-py3-none-any.whl
