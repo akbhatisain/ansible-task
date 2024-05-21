@@ -1,9 +1,8 @@
 ---
-handlers:
-  - name: Restart Services
-    service:
-      name: "{{ item }}"
-      state: restarted
-    with_items:
-      - nginx
-      - apache2
+- name: Restart Services
+  service:
+    name: "{{ item }}"
+    state: restarted
+  loop:
+    - nginx
+    - apache2
